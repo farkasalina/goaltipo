@@ -548,5 +548,32 @@ footer p {
     © 2026 Goaltipp • Minden jog fenntartva.
   </p>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://ihqckhrqpydlpjzcyzap.supabase.co";
+const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function loadTips() {
+  const { data, error } = await supabaseClient
+    .from("tips")
+    .select("*")
+    .eq("premium", false);
+
+  if (error) {
+    console.error("Supabase hiba:", error);
+    return;
+  }
+
+  console.log("Ingyenes tippek:", data);
+}
+
+loadTips();
+</script>
 </body>
 </html>
