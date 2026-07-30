@@ -567,9 +567,13 @@ async function loadTips() {
     .eq("premium", false);
 
   if (error) {
-    console.error("Supabase hiba:", error);
-    return;
-  }
+  console.error("Supabase hiba:", error);
+
+  document.getElementById("supabaseTips").innerHTML =
+    "<p style='color:#ff6b6b;'>Supabase hiba: " + error.message + "</p>";
+
+  return;
+}
 
   console.log("Ingyenes tippek:", data);
 }
