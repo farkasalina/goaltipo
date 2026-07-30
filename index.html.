@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goaltipp ⚽ | Prémium Futballtippek</title>
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+html{
+  scroll-behavior:smooth;
+}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  color:white;
+  background:
+    radial-gradient(circle at 10% 10%,#ff2d75 0%,transparent 25%),
+    radial-gradient(circle at 90% 15%,#743cff 0%,transparent 28%),
+    radial-gradient(circle at 50% 90%,#008cff 0%,transparent 30%),
+    linear-gradient(135deg,#08001c,#12002d,#001b3d);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* NAV */
+nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(5,2,20,.75);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:17px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-size:28px;
+  font-weight:1000;
+  letter-spacing:-1px;
+}
+.logo span{
+  background:linear-gradient(90deg,#00eaff,#ff3c9d,#ffd43b);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.nav-links{
+  display:flex;
+  gap:25px;
+  list-style:none;
+}
+.nav-links a{
+  color:#fff;
+  font-size:14px;
+  font-weight:800;
+  opacity:.8;
+}
+.nav-links a:hover{
+  opacity:1;
+  color:#00eaff;
+}
+.nav-btn{
+  background:linear-gradient(90deg,#ff2d75,#7c3cff);
+  padding:11px 18px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:900;
+}
+/* HERO */
+.hero{
+  min-height:760px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:80px 20px;
+  position:relative;
+}
+.hero:before{
+  content:"⚽";
+  position:absolute;
+  font-size:280px;
+  opacity:.035;
+  right:4%;
+  bottom:5%;
+  transform:rotate(-15deg);
+}
+.hero-content{
+  max-width:900px;
+  position:relative;
+  z-index:2;
+}
+.badge{
+  display:inline-block;
+  padding:10px 18px;
+  border-radius:50px;
+  background:linear-gradient(90deg,rgba(0,234,255,.18),rgba(255,45,117,.18));
+  border:1px solid rgba(255,255,255,.2);
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:25px;
+}
+.hero h1{
+  font-size:clamp(55px,9vw,105px);
+  line-height:.9;
+  letter-spacing:-7px;
+  font-weight:1000;
+}
+.hero h1 .gradient{
+  background:linear-gradient(
+    90deg,
+    #00eaff,
+    #7c3cff,
+    #ff2d75,
+    #ff9d00,
+    #ffe600
+  );
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.hero p{
+  max-width:680px;
+  margin:30px auto;
+  color:#d5d0e5;
+  font-size:18px;
+  line-height:1.7;
+}
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+.button{
+  display:inline-block;
+  padding:16px 25px;
+  border-radius:14px;
+  font-weight:900;
+  font-size:14px;
+  transition:.25s;
+}
+.button:hover{
+  transform:translateY(-4px) scale(1.02);
+}
+.primary{
+  background:linear-gradient(90deg,#ff2d75,#ff7a18);
+  box-shadow:0 12px 35px rgba(255,45,117,.3);
+}
+.secondary{
+  background:linear-gradient(90deg,#007cff,#7c3cff);
+  box-shadow:0 12px 35px rgba(0,124,255,.25);
+}
+.stats{
+  max-width:750px;
+  margin:60px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+.stat{
+  padding:22px;
+  border-radius:20px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(12px);
+}
+.stat-icon{
+  font-size:28px;
+}
+.stat strong{
+  display:block;
+  margin-top:8px;
+  font-size:12px;
+}
+/* SECTION */
+.section{
+  max-width:1200px;
+  margin:auto;
+  padding:90px 22px;
+}
+.section-title{
+  text-align:center;
+  font-size:42px;
+  font-weight:1000;
+  margin-bottom:10px;
+}
+.section-subtitle{
+  text-align:center;
+  color:#b7b0ca;
+  margin-bottom:45px;
+}
+/* TIPS */
+.tips{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+.tip{
+  position:relative;
+  overflow:hidden;
+  padding:30px;
+  border-radius:25px;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(15px);
+  transition:.3s;
+}
+.tip:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 50px rgba(0,0,0,.3);
+}
+.tip:nth-child(1){
+  border-top:4px solid #00eaff;
+}
+.tip:nth-child(2){
+  border-top:4px solid #ff2d75;
+}
+.tip:nth-child(3){
+  border-top:4px solid #ffb300;
+}
+.tip-label{
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:9px;
+  background:#00bcd4;
+  font-size:10px;
+  font-weight:1000;
+  margin-bottom:18px;
+}
+.tip:nth-child(2) .tip-label{
+  background:#ff2d75;
+}
+.tip:nth-child(3) .tip-label{
+  background:#ff9d00;
+}
+.tip h3{
+  font-size:20px;
+  margin-bottom:20px;
+}
+.row{
+  display:flex;
+  justify-content:space-between;
+  padding:13px 0;
+  border-top:1px solid rgba(255,255,255,.1);
+  color:#c4bfd0;
+  font-size:13px;
+}
+.row strong{
+  color:white;
+}
+.odds{
+  color:#00eaff!important;
+  font-size:16px;
+}
+/* PREMIUM */
+.premium{
+  padding:100px 22px;
+  background:
+    radial-gradient(circle at 10% 50%,rgba(255,45,117,.16),transparent 30%),
+    radial-gradient(circle at 90% 50%,rgba(0,234,255,.15),transparent 30%),
+    rgba(0,0,0,.18);
+  border-top:1px solid rgba(255,255,255,.1);
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.plans{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+.plan{
+  position:relative;
+  padding:30px 22px;
+  border-radius:25px;
+  text-align:center;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(15px);
+  transition:.3s;
+}
+.plan:hover{
+  transform:translateY(-9px);
+}
+.plan:nth-child(1){
+  box-shadow:0 20px 60px rgba(0,234,255,.08);
+}
+.plan:nth-child(2){
+  box-shadow:0 20px 60px rgba(124,60,255,.08);
+}
+.plan:nth-child(3){
+  box-shadow:0 20px 60px rgba(255,45,117,.08);
+}
+.plan:nth-child(4){
+  box-shadow:0 20px 60px rgba(255,174,0,.12);
+}
+.plan:nth-child(1) h3{
+  color:#00eaff;
+}
+.plan:nth-child(2) h3{
+  color:#a879ff;
+}
+.plan:nth-child(3) h3{
+  color:#ff4f9a;
+}
+.plan:nth-child(4) h3{
+  color:#ffd43b;
+}
+.plan h3{
+  font-size:22px;
+  margin-bottom:18px;
+}
+.price{
+  font-size:36px;
+  font-weight:1000;
+}
+.plan:nth-child(1) .price{
+  color:#00eaff;
+}
+.plan:nth-child(2) .price{
+  color:#a879ff;
+}
+.plan:nth-child(3) .price{
+  color:#ff4f9a;
+}
+.plan:nth-child(4) .price{
+  color:#ffd43b;
+}
+.duration{
+  color:#a7a0b8;
+  font-size:12px;
+  margin-top:5px;
+}
+.features{
+  list-style:none;
+  text-align:left;
+  margin:25px 0;
+  color:#d0cadb;
+  font-size:13px;
+  line-height:2.3;
+}
+.buy{
+  display:block;
+  padding:15px;
+  border-radius:13px;
+  color:white;
+  font-weight:1000;
+  transition:.2s;
+}
+.plan:nth-child(1) .buy{
+  background:linear-gradient(90deg,#00a8ff,#00eaff);
+  color:#001018;
+}
+.plan:nth-child(2) .buy{
+  background:linear-gradient(90deg,#6530ff,#a879ff);
+}
+.plan:nth-child(3) .buy{
+  background:linear-gradient(90deg,#ff176d,#ff4f9a);
+}
+.plan:nth-child(4) .buy{
+  background:linear-gradient(90deg,#ff9d00,#ffe600);
+  color:#251500;
+}
+.buy:hover{
+  transform:scale(1.04);
+}
+.featured{
+  transform:scale(1.035);
+}
+.featured:hover{
+  transform:scale(1.035) translateY(-9px);
+}
+.popular{
+  position:absolute;
+  top:-15px;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,#ff9d00,#ffe600);
+  color:#241500;
+  padding:7px 15px;
+  border-radius:50px;
+  font-size:10px;
+  font-weight:1000;
+  white-space:nowrap;
+}
+/* RÓLUNK */
+.about{
+  max-width:850px;
+  margin:auto;
+  text-align:center;
+  padding:40px;
+  border-radius:28px;
+  background:linear-gradient(
+    135deg,
+    rgba(0,234,255,.1),
+    rgba(255,45,117,.1),
+    rgba(124,60,255,.1)
+  );
+  border:1px solid rgba(255,255,255,.15);
+}
+.about p{
+  color:#c0bacb;
+  line-height:1.8;
+  margin-top:18px;
+}
+/* CTA */
+.cta{
+  max-width:900px;
+  margin:20px auto 90px;
+  padding:65px 25px;
+  text-align:center;
+  border-radius:35px;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(0,234,255,.14),
+      rgba(124,60,255,.18),
+      rgba(255,45,117,.15)
+    );
+  border:1px solid rgba(255,255,255,.18);
+}
+.cta h2{
+  font-size:40px;
+  margin-bottom:15px;
+}
+.cta p{
+  color:#c0bacb;
+  margin-bottom:25px;
+}
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:50px 20px;
+  background:#05020e;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.footer-logo{
+  font-size:25px;
+  font-weight:1000;
+  margin-bottom:12px;
+}
+.footer-logo span{
+  background:linear-gradient(90deg,#00eaff,#ff2d75,#ffd43b);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+footer p{
+  color:#746e82;
+  font-size:12px;
+  line-height:1.8;
+}
+/* MOBIL */
+@media(max-width:950px){
+  .plans{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .tips{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:650px){
+  .nav-inner{
+    flex-direction:column;
+    gap:15px;
+  }
+  .nav-btn{
+    display:none;
+  }
+  .nav-links{
+    gap:15px;
+  }
+  .hero{
+    min-height:auto;
+    padding:75px 18px;
+  }
+  .hero h1{
+    letter-spacing:-4px;
+  }
+  .stats{
+    grid-template-columns:1fr;
+  }
+  .plans{
+    grid-template-columns:1fr;
+  }
+  .featured{
+    transform:none;
+  }
+  .featured:hover{
+    transform:translateY(-9px);
+  }
+  .section{
+    padding:65px 17px;
+  }
+}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav>
+<div class="nav-inner">
+  <div class="logo">
+    ⚽ <span>Goal</span>tipp
+  </div>
+  <ul class="nav-links">
+    <li><a href="#tippek">Tippek</a></li>
+    <li><a href="#premium">Prémium</a></li>
+    <li><a href="#rolunk">Rólunk</a></li>
+  </ul>
+  <a href="#premium" class="nav-btn">
+    ⭐ Prémium
+  </a>
+</div>
+</nav>
+<!-- HERO -->
+<section class="hero">
+<div class="hero-content">
+  <div class="badge">
+    ⚡ GOALTIPP • FUTBALL • PRÉMIUM
+  </div>
+  <h1>
+    Ahol a futball<br>
+    <span class="gradient">igazán izgalmas.</span>
+  </h1>
+  <p>
+    Ingyenes futballtippek, prémium tartalmak és
+    mérkőzés-elemzések egyetlen modern oldalon.
+  </p>
+  <div class="buttons">
+<a href="#premium" class="button primary">
+  ⭐ Prémium csomagok
+</a>
+<a href="#tippek" class="button secondary">
+  ⚽ Tippek megtekintése
+</a>
+  </div>
+  <div class="stats">
+<div class="stat">
+  <div class="stat-icon">⚽</div>
+  <strong>FUTBALLTIPPEK</strong>
+</div>
+<div class="stat">
+  <div class="stat-icon">🔥</div>
+  <strong>FRISS TARTALMAK</strong>
+</div>
+<div class="stat">
+  <div class="stat-icon">💎</div>
+  <strong>PRÉMIUM HOZZÁFÉRÉS</strong>
+</div>
+  </div>
+</div>
+</section>
+<!-- TIPPEK -->
+<section class="section" id="tippek">
+<h2 class="section-title">
+  🔥 Ingyenes tippek
+</h2>
+<p class="section-subtitle">
+  Nézd meg a Goaltipp ízelítőit.
+</p>
+<div class="tips">
+<div class="tip">
+  <span class="tip-label">
+    ⚡ INGYENES
+  </span>
+  <h3>
+    Barcelona – Real Madrid
+  </h3>
+  <div class="row">
+    <span>Tipp</span>
+    <strong>
+      Mindkét csapat gólt szerez
+    </strong>
+  </div>
+  <div class="row">
+    <span>Odds</span>
+    <strong class="odds">
+      1.65
+    </strong>
+  </div>
+</div>
+<div class="tip">
+  <span class="tip-label">
+    🔥 INGYENES
+  </span>
+  <h3>
+    Liverpool – Arsenal
+  </h3>
+  <div class="row">
+    <span>Tipp</span>
+    <strong>
+      Több mint 2,5 gól
+    </strong>
+  </div>
+  <div class="row">
+    <span>Odds</span>
+    <strong class="odds">
+      1.80
+    </strong>
+  </div>
+</div>
+<div class="tip">
+  <span class="tip-label">
+    ⭐ INGYENES
+  </span>
+  <h3>
+    Bayern – Dortmund
+  </h3>
+  <div class="row">
+    <span>Tipp</span>
+    <strong>
+      Bayern győzelem
+    </strong>
+  </div>
+  <div class="row">
+    <span>Odds</span>
+    <strong class="odds">
+      1.55
+    </strong>
+  </div>
+</div>
+</div>
+</section>
+<!-- PREMIUM -->
+<section class="premium" id="premium">
+<h2 class="section-title">
+  💎 Goaltipp Prémium
+</h2>
+<p class="section-subtitle">
+  Válaszd ki a neked megfelelő csomagot.
+</p>
+<div class="plans">
+<!-- NAPI -->
+<div class="plan">
+<h3>
+  💠 Napi
+</h3>
+<div class="price">
+  500 Ft
+</div>
+<div class="duration">
+  1 nap hozzáférés
+</div>
+<ul class="features">
+  <li>✓ Prémium tippek</li>
+  <li>✓ Mérkőzés-elemzések</li>
+  <li>✓ Prémium tartalmak</li>
+</ul>
+
+💳 Előfizetek
+</div>
+<!-- HETI -->
+<div class="plan">
+<h3>
+  🔮 Heti
+</h3>
+<div class="price">
+  2 000 Ft
+</div>
+<div class="duration">
+  7 nap hozzáférés
+</div>
+<ul class="features">
+  <li>✓ Prémium tippek</li>
+  <li>✓ Mérkőzés-elemzések</li>
+  <li>✓ Prémium tartalmak</li>
+</ul>
+
+💳 Előfizetek
+</div>
+<!-- 2 HETI -->
+<div class="plan">
+<h3>
+  💗 2 heti
+</h3>
+<div class="price">
+  3 000 Ft
+</div>
+<div class="duration">
+  14 nap hozzáférés
+</div>
+<ul class="features">
+  <li>✓ Prémium tippek</li>
+  <li>✓ Mérkőzés-elemzések</li>
+  <li>✓ Prémium tartalmak</li>
+</ul>
+
+💳 Előfizetek
+</div>
+<!-- HAVI -->
+<div class="plan featured">
+<div class="popular">
+  👑 LEGKERESETTEBB
+</div>
+<h3>
+  👑 Havi
+</h3>
+<div class="price">
+  10 000 Ft
+</div>
+<div class="duration">
+  30 nap hozzáférés
+</div>
+<ul class="features">
+  <li>✓ Prémium tippek</li>
+  <li>✓ Mérkőzés-elemzések</li>
+  <li>✓ Prémium tartalmak</li>
+  <li>✓ Kiemelt csomag</li>
+</ul>
+
+💳 Előfizetek
+</div>
+</div>
+<p style="text-align:center;color:#9d96aa;font-size:12px;margin-top:25px;">
+  🔒 Biztonságos fizetés a Stripe rendszerén keresztül.
+</p>
+</section>
+<!-- RÓLUNK -->
+<section class="section" id="rolunk">
+<div class="about">
+<h2 class="section-title">
+  ⚽ Goaltipp
+</h2>
+<p>
+  A Goaltipp futballtippekkel és mérkőzés-elemzésekkel
+  foglalkozó oldal. Ingyenes és prémium tartalmakat
+  kínálunk egy modern, könnyen használható felületen.
+</p>
+</div>
+</section>
+<!-- CTA -->
+<div class="cta">
+<h2>
+  🚀 Lépj be a Goaltipp világába!
+</h2>
+<p>
+  Válaszd ki a csomagodat, és fedezd fel a prémium tartalmakat.
+</p>
+<a href="#premium" class="button primary">
+  👑 Csomagok megtekintése
+</a>
+</div>
+<!-- FOOTER -->
+<footer>
+<div class="footer-logo">
+  ⚽ <span>Goaltipp</span>
+</div>
+<p>
+  Futballtippek • Mérkőzés-elemzések • Prémium tartalmak
+</p>
+<p>
+  © 2026 Goaltipp • Minden jog fenntartva.
+</p>
+</footer>
+</body>
+</html>
