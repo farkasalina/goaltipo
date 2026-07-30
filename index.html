@@ -534,23 +534,17 @@ footer p {
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL =sb_publishable_93vv91SaCG6zvqO_qoN0wA_MjDO9OI8
-/*
-  IDE A SUPABASE PROJECT SETTINGS → API
-  OLDALÁN LÉVŐ ANON PUBLIC KULCSOT KELL TENNI.
-  FONTOS:
-  Ne a Project URL-t tedd ide.
-  Ne a Data API URL-t tedd ide.
-  Az ANON PUBLIC kulcs kell.
-*/
+const SUPABASE_URL =
+  "https://xjwahoxrqxbgspsuuruw.supabase.co";
 const SUPABASE_KEY =
-  "IDE_MASOLD_A_SUPABASE_ANON_PUBLIC_KULCSOT";
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-function escapeHtml(value) {
+  "sb_publishable_93vv91SaCG6zvqO_qoN0wA_MjDO9OI8";
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+const IMAGE_URL =
+  "https://xjwahoxrqxbgspsuuruw.supabase.co/storage/v1/object/public/tip-images/IMG_1381.png";
+function safe(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -558,104 +552,143 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+function getValue(row, names, fallback = "-") {
+  for (const name of names) {
+    if (row[name] !== undefined && row[name] !== null && row[name] !== "") {
+      return row[name];
+    }
+  }
+  const keys = Object.keys(row);
+  for (const wanted of names) {
+    const found = keys.find(
+      key => key.toLowerCase().replace(/\s/g, "") ===
+             wanted.toLowerCase().replace(/\s/g, "")
+    );
+    if (
+      found &&
+      row[found] !== undefined &&
+      row[found] !== null &&
+      row[found] !== ""
+    ) {
+      return row[found];
+    }
+  }
+  return fallback;
+}
 async function loadTips() {
   const container =
     document.getElementById("supabaseTips");
+  container.innerHTML = `
+    <div class="loading">
+      ⚽ Tippek betöltése...
+    </div>
+  `;
   try {
-    const result =
-      await supabaseClient
+    const result = await Promise.race([
+      db
         .from("tips")
-        .select("*")
-        .eq("Premium", false)
-        .order("Created at", {
-          ascending: false
-        });
-    const data = result.data;
-    const error = result.error;
+        .select("*"),
+      new Promise((_, reject) =>
+        setTimeout(
+          () => reject(
+            new Error("A Supabase kapcsolat túl sokáig várakozott.")
+          ),
+          10000
+        )
+      )
+    ]);
+    const { data, error } = result;
     if (error) {
       throw error;
     }
     if (!data || data.length === 0) {
       container.innerHTML = `
         <div class="loading">
-          Jelenleg nincs ingyenes tipp.
+          ⚽ Jelenleg nincs feltöltött tipp.
         </div>
       `;
       return;
     }
+    const freeTips = data.filter(row => {
+      const premium = getValue(
+        row,
+        ["Premium", "premium"],
+        false
+      );
+      return premium !== true &&
+             premium !== "true" &&
+             premium !== 1 &&
+             premium !== "1";
+    });
+    const tipsToShow =
+      freeTips.length > 0 ? freeTips : data;
     container.innerHTML =
-      data.map(tip => {
-        const matchName =
-          escapeHtml(
-            tip["Match name"] || "Meccs"
-          );
-        const matchTime =
-          escapeHtml(
-            tip["Match time"] || "-"
-          );
-        const odds =
-          escapeHtml(
-            tip["Odds"] || "-"
-          );
-        const imageUrl =
-          tip["image_url"] || "";
+      tipsToShow.map(row => {
+        const matchName = getValue(
+          row,
+          ["Match name", "match_name", "matchname"],
+          "Meccs"
+        );
+        const matchTime = getValue(
+          row,
+          ["Match time", "match_time", "matchtime"],
+          "-"
+        );
+        const odds = getValue(
+          row,
+          ["Odds", "odds"],
+          "-"
+        );
         const image =
-          imageUrl
-            ? `
-              <img
-                class="tip-image"
-                src="${escapeHtml(imageUrl)}"
-                alt="${matchName}"
-                loading="lazy"
-                onerror="this.style.display='none'"
-              >
-            `
-            : "";
+          getValue(
+            row,
+            ["image_url", "Image URL", "image"],
+            ""
+          );
+        const imageToShow =
+          image || IMAGE_URL;
         return `
           <div class="tip">
-            ${image}
+            <img
+              class="tip-image"
+              src="${safe(imageToShow)}"
+              alt="${safe(matchName)}"
+              loading="lazy"
+              onerror="this.style.display='none'"
+            >
             <span class="tag">
               ⚡ INGYENES
             </span>
             <h3>
-              ${matchName}
+              ${safe(matchName)}
             </h3>
             <div class="row">
-              <span>
-                Időpont
-              </span>
+              <span>Időpont</span>
               <strong>
-                ${matchTime}
+                ${safe(matchTime)}
               </strong>
             </div>
             <div class="row">
-              <span>
-                Odds
-              </span>
+              <span>Odds</span>
               <strong class="odds">
-                ${odds}
+                ${safe(odds)}
               </strong>
             </div>
           </div>
         `;
       }).join("");
   } catch (error) {
-    console.error(
-      "Supabase hiba:",
-      error
-    );
+    console.error("Supabase hiba:", error);
     container.innerHTML = `
       <div class="error">
-        Supabase hiba:
-        ${escapeHtml(
-          error.message ||
-          "Kapcsolódási hiba"
-        )}
+        ❌ Supabase hiba:<br><br>
+        ${safe(error.message || "Ismeretlen hiba")}
       </div>
     `;
   }
 }
 loadTips();
+</script>
 </script>
 </body>
 </html>
