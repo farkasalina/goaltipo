@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goaltipp – Futball tippek</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+    }
+
+    header {
+      background: #16a34a;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 36px;
+    }
+
+    nav {
+      margin-top: 12px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 70px 20px;
+      background: #111827;
+    }
+
+    .hero h2 {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      color: #cbd5e1;
+      font-size: 18px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .tips {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .tip {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+
+    .tip h3 {
+      color: #4ade80;
+      margin-bottom: 12px;
+    }
+
+    .tip p {
+      margin: 8px 0;
+      color: #cbd5e1;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #16a34a;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .button:hover {
+      background: #15803d;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      margin-top: 30px;
+      background: #020617;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>⚽ Goaltipp</h1>
+    <nav>
+      <a href="#tippek">Tippek</a>
+      <a href="#rolunk">Rólunk</a>
+      <a href="#kapcsolat">Kapcsolat</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Üdvözlünk a Goaltippen!</h2>
+    <p>Futballmeccsek, tippek és mérkőzés-elemzések egy helyen.</p>
+  </section>
+
+  <section class="container" id="tippek">
+    <h2>🔥 Mai tippek</h2>
+
+    <div class="tips">
+
+      <div class="tip">
+        <h3>Barcelona – Real Madrid</h3>
+        <p>Tipp: Mindkét csapat gólt szerez</p>
+        <p>Odds: 1.65</p>
+        <a href="#" class="button">Részletek</a>
+      </div>
+
+      <div class="tip">
+        <h3>Liverpool – Arsenal</h3>
+        <p>Tipp: Több mint 2,5 gól</p>
+        <p>Odds: 1.80</p>
+        <a href="#" class="button">Részletek</a>
+      </div>
+
+      <div class="tip">
+        <h3>Bayern – Dortmund</h3>
+        <p>Tipp: Bayern győzelem</p>
+        <p>Odds: 1.55</p>
+        <a href="#" class="button">Részletek</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="container" id="rolunk">
+    <h2>ℹ️ Rólunk</h2>
+    <p style="text-align:center; color:#cbd5e1;">
+      A Goaltipp célja, hogy könnyen áttekinthető futballtippeket
+      és mérkőzés-elemzéseket mutasson be.
+    </p>
+  </section>
+
+  <section class="container" id="kapcsolat">
+    <h2>📩 Kapcsolat</h2>
+    <p style="text-align:center; color:#cbd5e1;">
+      Hamarosan elérhető lesz a kapcsolatfelvételi oldal.
+    </p>
+  </section>
+
+  <footer>
+    © 2026 Goaltipp – Minden jog fenntartva.
+  </footer>
+
+</body>
+</html>
