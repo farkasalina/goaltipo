@@ -1,2 +1,0 @@
-# goaltipo
-Public
