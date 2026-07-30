@@ -574,6 +574,37 @@ async function loadTips() {
   console.log("Ingyenes tippek:", data);
 }
 
+async function loadTips() {
+  const { data, error } = await supabaseClient
+    .from("tips")
+    .select("*")
+    .eq("premium", false);
+
+  if (error) {
+    console.error("Supabase hiba:", error);
+    return;
+  }
+
+  const container = document.getElementById("supabaseTips");
+
+  container.innerHTML = data.map(tip => `
+    <div class="tip">
+      <span class="tag">⚡ INGYENES</span>
+      <h3>${tip["match name"] || "Meccs"}</h3>
+
+      <div class="row">
+        <span>Időpont</span>
+        <strong>${tip["match time"] || "-"}</strong>
+      </div>
+
+      <div class="row">
+        <span>Odds</span>
+        <strong class="odds">${tip["odd"] || "-"}</strong>
+      </div>
+    </div>
+  `).join("");
+}
+
 loadTips();
 </script>
 </body>
