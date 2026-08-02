@@ -537,7 +537,7 @@ footer p {
   </div>
 </div>
 <!-- PRÉMIUM KÉPEK -->
-<div class="premium-images">
+><div class="premium-images">
   <div class="premium-card">
     <div class="premium-label">
       👑 PRÉMIUM SZELVÉNY #1
@@ -597,7 +597,7 @@ footer p {
   🔒 A fizetés biztonságosan a Stripe rendszerén keresztül történik.
 </p>
   </div>
-</section>
+</section
 <!-- RÓLUNK -->
 <section id="rolunk">
   <div class="about">
@@ -798,7 +798,69 @@ async function loadTips() {
     `;
   }
 }
-loadTips();
+loadTips();async function loadPremiumImages(){
+
+const box=document.getElementById("premiumImages");
+
+const {data:{user}}=await db.auth.getUser();
+
+if(!user){
+box.innerHTML="🔒 Jelentkezz be a prémium képekhez.";
+return;
+}
+
+const {data:profile}=await db
+.from("profiles")
+.select("is_premium")
+.eq("id",user.id)
+.single();
+
+if(!profile?.is_premium){
+box.innerHTML="👑 Ez csak prémium tagoknak elérhető.";
+return;
+}
+
+
+const files=[
+"4FA29EE2-0851-47C6-8F2D-5C3B94F70860.jpeg",
+"82C304B6-C6CE-4CAA-923A-BDAB50E73277.jpeg",
+"BA453BCD-8FBA-4944-9EA1-659A98157C93.jpeg",
+"C9FC2AA1-BB52-4315-A0F7-BE2C87CE49EA.jpeg",
+"DA2FCD3E-4AD9-4330-ABA1-B64F32007009.jpeg",
+"F829A143-0165-46F7-AC31-BDF028CE3A2D.jpeg"
+];
+
+
+let html="";
+
+
+for(const file of files){
+
+const {data}=await db.storage
+.from("tip-images")
+.createSignedUrl(file,3600);
+
+
+if(data?.signedUrl){
+
+html+=`
+<div class="premium-card">
+<div class="premium-label">
+👑 PRÉMIUM SZELVÉNY
+</div>
+<img src="${data.signedUrl}">
+</div>
+`;
+
+}
+
+}
+
+box.innerHTML=html;
+
+}
+
+loadPremiumImages();
 </script>
 </body>
 </html>
